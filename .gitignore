@@ -5,3 +5,4 @@
 *.war
 *.ear
 /v1/sugarsync-java/nbproject/private/
+/v1/sugarsync-java/build/
