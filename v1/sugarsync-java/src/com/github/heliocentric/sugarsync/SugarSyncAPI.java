@@ -18,24 +18,52 @@
  */
 package com.github.heliocentric.sugarsync;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author helio
  */
 public class SugarSyncAPI {
-    private static final String UserAgent = "SugarSync-Java/1.0";
-	private static final String AUTH_ACCESS_TOKEN_API_URL = "https://api.sugarsync.com/authorization";
-	private static final String ACCESS_TOKEN_AUTH_REQUEST_TEMPLATE = 
+    private String UserAgent = "SugarSync-Java/1.0";
+	private String AUTH_ACCESS_TOKEN_API_URL = "https://api.sugarsync.com/authorization";
+	private String ACCESS_TOKEN_AUTH_REQUEST_TEMPLATE = 
 			"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
 			+ "<tokenAuthRequest>"
 			+ "<accessKeyId>%s</accessKeyId>"
 			+ "<privateAccessKey>%s</privateAccessKey>"
 			+ "<refreshToken>%s</refreshToken>"
 			+ "</tokenAuthRequest>";
+	private String fillRequestTemplate(String accessKey, String privateAccessKey, String refreshToken) {
+        return String.format(this.ACCESS_TOKEN_AUTH_REQUEST_TEMPLATE, new Object[] { accessKey, privateAccessKey,
+                refreshToken });
+    }
 	public void start() {
+		String charset = "UTF-8";
+		try {
+			this.Connection = new URL("http://www.google.com").openConnection();
+			this.Connection.setRequestProperty("Accept-Charset", charset);
+			this.Connection.setRequestProperty("User-Agent", this.UserAgent);
+			
+			BufferedReader in = new BufferedReader(new InputStreamReader(this.Connection.getInputStream()));
+			String readline;
+			while ((readline = in.readLine()) != null) {
+				System.out.println(readline);
+			}
+		} catch (IOException ex) {
+			Logger.getLogger(SugarSyncAPI.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		
 	}
 	
-	
+	URLConnection Connection;
 	public SugarSyncAPI(String Username, String Password, String AppID, String KeyID, String PrivateKey) {
 		this.Username = Username;
 		this.Password = Password;
