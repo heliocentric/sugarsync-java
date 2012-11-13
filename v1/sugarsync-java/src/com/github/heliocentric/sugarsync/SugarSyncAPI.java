@@ -13,6 +13,16 @@ public class SugarSyncAPI {
 	public void start() {
 	}
 
-	public SugarSyncAPI(String AppID, String KeyID, String PrivateKey) {
+	public SugarSyncAPI(String Username, String Password, String AppID, String KeyID, String PrivateKey) {
+		this.Username = Username;
+		this.Password = Password;
+		this.AppID = AppID;
+		this.KeyID = KeyID;
+		this.PrivateKey = PrivateKey;
 	}
+	private String AppID;
+	private String KeyID;
+	private String PrivateKey;
+	private String Username;
+	private String Password;
 }
