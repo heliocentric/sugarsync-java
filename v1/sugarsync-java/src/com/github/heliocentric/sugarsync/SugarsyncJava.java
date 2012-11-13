@@ -15,7 +15,8 @@ public class SugarsyncJava {
 	 */
 
 	public static void main(String[] args) {
-		SugarSyncAPI main = new SugarSyncAPI();
+		
+		SugarSyncAPI main = new SugarSyncAPI(args[0], args[1], args[2]);
 		main.start();
 	}
 }

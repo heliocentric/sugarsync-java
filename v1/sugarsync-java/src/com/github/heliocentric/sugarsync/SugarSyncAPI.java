@@ -9,8 +9,10 @@ package com.github.heliocentric.sugarsync;
  * @author helio
  */
 public class SugarSyncAPI {
-    public void start(){
-		
+
+	public void start() {
 	}
-    
+
+	public SugarSyncAPI(String AppID, String KeyID, String PrivateKey) {
+	}
 }
