@@ -9,6 +9,8 @@ package com.github.heliocentric.sugarsync;
  * @author helio
  */
 public class SugarSyncAPI {
-    
+    public void start(){
+		System.out.println("Test");
+	}
     
 }

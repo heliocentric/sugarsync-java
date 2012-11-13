@@ -10,11 +10,12 @@ package com.github.heliocentric.sugarsync;
  */
 public class SugarsyncJava {
 
-    /**
-     * @param args the command line arguments
-     */
-    public SugarSyncAPI Connection;
-    public static void main(String[] args) {
-        System.out.println("Test");
-    }
+	/**
+	 * @param args the command line arguments
+	 */
+
+	public static void main(String[] args) {
+		SugarSyncAPI main = new SugarSyncAPI();
+		main.start();
+	}
 }
