@@ -10,7 +10,7 @@ package com.github.heliocentric.sugarsync;
  */
 public class SugarSyncAPI {
     public void start(){
-		System.out.println("Test");
+		
 	}
     
 }
