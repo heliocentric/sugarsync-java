@@ -23,11 +23,16 @@ package com.github.heliocentric.sugarsync;
  * @author helio
  */
 public class SugarSyncAPI {
-	
+    private static final String UserAgent = "SugarSync-Java/1.0";
 	private static final String AUTH_ACCESS_TOKEN_API_URL = "https://api.sugarsync.com/authorization";
-
+	private static final String ACCESS_TOKEN_AUTH_REQUEST_TEMPLATE = 
+			"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
+			+ "<tokenAuthRequest>"
+			+ "<accessKeyId>%s</accessKeyId>"
+			+ "<privateAccessKey>%s</privateAccessKey>"
+			+ "<refreshToken>%s</refreshToken>"
+			+ "</tokenAuthRequest>";
 	public void start() {
-		
 	}
 	
 	
