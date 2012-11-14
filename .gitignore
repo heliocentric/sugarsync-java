@@ -1,8 +1,8 @@
 *.class
 
 # Package Files #
-*.jar
 *.war
 *.ear
 /v1/sugarsync-java/nbproject/private/
 /v1/sugarsync-java/build/
+/v1/sugarsync-java/dist
