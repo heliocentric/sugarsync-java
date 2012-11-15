@@ -31,7 +31,7 @@ import java.util.logging.Logger;
  *
  * @author helio
  */
-public class SugarSyncAPI {
+public class SugarSyncAPI implements SynchroAPI {
     private String UserAgent = "SugarSync-Java/1.0";
 	private String AUTH_ACCESS_TOKEN_API_URL = "https://api.sugarsync.com/authorization";
 	private String ACCESS_TOKEN_AUTH_REQUEST_TEMPLATE = 
@@ -48,7 +48,7 @@ public class SugarSyncAPI {
 	public void start() {
 		String charset = "UTF-8";
 		try {
-			this.Connection = new URL("http://www.google.com").openConnection();
+			this.Connection = new URL("http://www.niftyengineering.com").openConnection();
 			this.Connection.setRequestProperty("Accept-Charset", charset);
 			this.Connection.setRequestProperty("User-Agent", this.UserAgent);
 			

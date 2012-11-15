@@ -29,8 +29,9 @@ public class SugarsyncJava {
 	 */
 
 	public static void main(String[] args) {
-		
-		SugarSyncAPI main = new SugarSyncAPI(args[0], args[1], args[2], args[3], args[4]);
+		PropertyList options = new PropertyList();
+		options.put("backend","SugarSync");
+		Synchro main = new Synchro(options);
 		main.start();
 	}
 }
