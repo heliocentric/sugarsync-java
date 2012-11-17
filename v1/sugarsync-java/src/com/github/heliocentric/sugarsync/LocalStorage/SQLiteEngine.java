@@ -66,6 +66,9 @@ public class SQLiteEngine implements StorageEngine {
 				case "1.1.2":
 					this.DB.exec("ALTER TABLE hashlist ADD COLUMN hashtype VARCHAR(255)");
 					this.DB.exec("UPDATE config SET value='1.1.3' WHERE name='schema'");
+				case "1.1.3":
+					this.DB.exec("CREATE TABLE file_revision (uuid VARCHAR(36) PRIMARY KEY ASC, fileid VARCHAR(36), current_hash VARCHAR(36), previous_hash VARCHAR(36), date TIMESTAMP)");
+					this.DB.exec("UPDATE config SET value='1.1.4' WHERE name='schema'");
 			}
 			this.CommitTransaction();
 		} catch (SQLiteException ex) {

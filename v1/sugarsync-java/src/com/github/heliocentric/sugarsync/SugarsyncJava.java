@@ -18,6 +18,9 @@
  */
 package com.github.heliocentric.sugarsync;
 
+import java.io.BufferedReader;
+import java.util.Scanner;
+
 /**
  *
  * @author helio
@@ -31,17 +34,14 @@ public class SugarsyncJava {
 	public static void main(String[] args) {
 		PropertyList options = new PropertyList();
 		options.put("backend","SugarSync");
-		switch (args.length) {
-			case 5:
-				options.put("PrivateKey",args[4]);
-			case 4:
-				options.put("KeyID",args[3]);
-			case 3:
-				options.put("AppID",args[2]);
-			case 2:
-				options.put("Password",args[1]);
-			case 1:
-				options.put("Username",args[0]);
+		if (args.length == 0) {
+			System.out.println("Path to scan: ");
+			Scanner reader = new Scanner(System.in);
+			String path = reader.nextLine();
+			options.put("path", path);
+		}
+		else {
+			options.put("path",args[args.length - 1]);
 		}
 		Synchro main = new Synchro(options);
 		main.start();
