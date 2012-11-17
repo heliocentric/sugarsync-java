@@ -31,6 +31,18 @@ public class SugarsyncJava {
 	public static void main(String[] args) {
 		PropertyList options = new PropertyList();
 		options.put("backend","SugarSync");
+		switch (args.length) {
+			case 5:
+				options.put("PrivateKey",args[4]);
+			case 4:
+				options.put("KeyID",args[3]);
+			case 3:
+				options.put("AppID",args[2]);
+			case 2:
+				options.put("Password",args[1]);
+			case 1:
+				options.put("Username",args[0]);
+		}
 		Synchro main = new Synchro(options);
 		main.start();
 	}

@@ -4,6 +4,8 @@
  */
 package com.github.heliocentric.sugarsync;
 
+import com.github.heliocentric.sugarsync.LocalStorage.StorageEngine;
+
 
 /**
  *
@@ -16,4 +18,5 @@ public class Synchro {
 	}
 	public void start() {
 	}
+	public StorageEngine DataEngine;
 }
