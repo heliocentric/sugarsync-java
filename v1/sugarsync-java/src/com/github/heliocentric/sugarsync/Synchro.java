@@ -4,7 +4,9 @@
  */
 package com.github.heliocentric.sugarsync;
 
+import com.github.heliocentric.sugarsync.LocalStorage.SQLiteEngine;
 import com.github.heliocentric.sugarsync.LocalStorage.StorageEngine;
+import java.io.File;
 
 
 /**
@@ -17,6 +19,7 @@ public class Synchro {
 		this.settings = options;
 	}
 	public void start() {
+		this.DataEngine = new SQLiteEngine();
 	}
 	public StorageEngine DataEngine;
 }

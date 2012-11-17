@@ -11,4 +11,7 @@ package com.github.heliocentric.sugarsync.LocalStorage;
 public interface StorageEngine {
 	public boolean Open() throws StorageEngineException;
 	public boolean Upgrade() throws StorageEngineException;
+	public boolean BeginTransaction() throws StorageEngineException;
+	public boolean CommitTransaction() throws StorageEngineException;
+	public boolean RollbackTransaction() throws StorageEngineException;
 }
