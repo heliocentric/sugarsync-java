@@ -6,6 +6,7 @@ package com.github.heliocentric.sugarsync.LocalStorage;
 
 import com.almworks.sqlite4java.SQLiteConnection;
 import com.almworks.sqlite4java.SQLiteException;
+import com.almworks.sqlite4java.SQLiteStatement;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,15 +45,36 @@ public class SQLiteEngine implements StorageEngine {
 				this.DB.exec("INSERT INTO config (name, value) VALUES ('application','synchro-0.1')");
 				this.CommitTransaction();
 			}
+			retval = true;
 		} catch (SQLiteException ex) {
 			Logger.getLogger(SQLiteEngine.class.getName()).log(Level.SEVERE, null, ex);
 		}
+		this.Upgrade();
 		return retval;
 	}
-
+	
 	@Override
 	public boolean Upgrade() throws StorageEngineException {
-		throw new UnsupportedOperationException("Not supported yet.");
+		boolean retval = false;
+		try {
+			this.BeginTransaction();
+			switch (this.GetSchema()) {
+				case "1.1.1":
+					this.DB.exec("CREATE TABLE fileid (uuid VARCHAR(36) PRIMARY KEY ASC)");
+					this.DB.exec("CREATE TABLE hashlist (uuid VARCHAR(36) PRIMARY KEY ASC, sha256 VARCHAR(64), md5 VARCHAR(32))");
+					this.DB.exec("UPDATE config SET value='1.1.2' WHERE name='schema'");
+				case "1.1.2":
+					this.DB.exec("ALTER TABLE hashlist ADD COLUMN hashtype VARCHAR(255)");
+					this.DB.exec("UPDATE config SET value='1.1.3' WHERE name='schema'");
+			}
+			this.CommitTransaction();
+		} catch (SQLiteException ex) {
+			Logger.getLogger(SQLiteEngine.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		catch (StorageEngineException e) {
+			
+		}
+		return retval;
 	}	
 	@Override
 	public boolean BeginTransaction() {
@@ -99,6 +121,20 @@ public class SQLiteEngine implements StorageEngine {
 		} else {
 			return true;
 		}
+	}
+
+	@Override
+	public String GetSchema() throws StorageEngineException {
+		try {
+		SQLiteStatement st = this.DB.prepare("SELECT value FROM config WHERE name = 'schema'");
+		while (st.step()) {
+			return st.columnString(0);
+		}
+		}
+		catch (SQLiteException e) {
+			throw new StorageEngineException();
+		}
+		return "0";
 	}
 	
 }

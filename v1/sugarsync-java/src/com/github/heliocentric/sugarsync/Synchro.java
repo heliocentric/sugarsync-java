@@ -6,7 +6,9 @@ package com.github.heliocentric.sugarsync;
 
 import com.github.heliocentric.sugarsync.LocalStorage.SQLiteEngine;
 import com.github.heliocentric.sugarsync.LocalStorage.StorageEngine;
-import java.io.File;
+import com.github.heliocentric.sugarsync.LocalStorage.StorageEngineException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -20,6 +22,11 @@ public class Synchro {
 	}
 	public void start() {
 		this.DataEngine = new SQLiteEngine();
+		try {
+			this.DataEngine.Open();
+		} catch (StorageEngineException ex) {
+			Logger.getLogger(Synchro.class.getName()).log(Level.SEVERE, null, ex);
+		}
 	}
 	public StorageEngine DataEngine;
 }

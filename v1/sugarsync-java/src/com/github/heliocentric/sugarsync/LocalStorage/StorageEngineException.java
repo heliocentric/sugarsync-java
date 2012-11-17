@@ -8,6 +8,6 @@ package com.github.heliocentric.sugarsync.LocalStorage;
  *
  * @author Helio
  */
-class StorageEngineException extends Exception {
+public class StorageEngineException extends Exception {
 	
 }
