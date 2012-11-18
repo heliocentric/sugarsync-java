@@ -69,6 +69,9 @@ public class SQLiteEngine implements StorageEngine {
 				case "1.1.3":
 					this.DB.exec("CREATE TABLE file_revision (uuid VARCHAR(36) PRIMARY KEY ASC, fileid VARCHAR(36), current_hash VARCHAR(36), previous_hash VARCHAR(36), date TIMESTAMP)");
 					this.DB.exec("UPDATE config SET value='1.1.4' WHERE name='schema'");
+				case "1.1.4":
+					this.DB.exec("CREATE TABLE filelist (uuid VARCHAR(36) PRIMARY KEY ASC, domain VARCHAR(36), filename VARCHAR(255), fileid VARCHAR(36))");
+					this.DB.exec("UPDATE config SET value='1.1.5' WHERE name='schema'");
 			}
 			this.CommitTransaction();
 		} catch (SQLiteException ex) {
@@ -138,6 +141,11 @@ public class SQLiteEngine implements StorageEngine {
 			throw new StorageEngineException();
 		}
 		return "0";
+	}
+
+	@Override
+	public void AddFolder(String Folder) {
+		
 	}
 	
 }

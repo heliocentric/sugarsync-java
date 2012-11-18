@@ -15,4 +15,5 @@ public interface StorageEngine {
 	public boolean CommitTransaction() throws StorageEngineException;
 	public boolean RollbackTransaction() throws StorageEngineException;
 	public String GetSchema() throws StorageEngineException;
+	public void AddFolder(String Folder);
 }

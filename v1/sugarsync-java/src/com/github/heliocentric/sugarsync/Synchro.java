@@ -27,6 +27,7 @@ public class Synchro {
 		} catch (StorageEngineException ex) {
 			Logger.getLogger(Synchro.class.getName()).log(Level.SEVERE, null, ex);
 		}
+		this.DataEngine.AddFolder(this.settings.get("path"));
 	}
 	public StorageEngine DataEngine;
 }
