@@ -20,6 +20,8 @@ package com.github.heliocentric.sugarsync;
 
 import java.io.BufferedReader;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -44,6 +46,14 @@ public class SugarsyncJava {
 			options.put("path",args[args.length - 1]);
 		}
 		Synchro main = new Synchro(options);
-		main.start();
+		try {
+			main.start();
+		} catch (NoSuchFieldException ex) {
+			Logger.getLogger(SugarsyncJava.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (IllegalArgumentException ex) {
+			Logger.getLogger(SugarsyncJava.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (IllegalAccessException ex) {
+			Logger.getLogger(SugarsyncJava.class.getName()).log(Level.SEVERE, null, ex);
+		}
 	}
 }

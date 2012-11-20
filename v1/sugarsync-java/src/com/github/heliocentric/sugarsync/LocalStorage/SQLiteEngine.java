@@ -58,20 +58,28 @@ public class SQLiteEngine implements StorageEngine {
 		boolean retval = false;
 		try {
 			this.BeginTransaction();
-			switch (this.GetSchema()) {
-				case "1.1.1":
+			if (this.GetSchema().equals("1.1.1")) {
 					this.DB.exec("CREATE TABLE fileid (uuid VARCHAR(36) PRIMARY KEY ASC)");
 					this.DB.exec("CREATE TABLE hashlist (uuid VARCHAR(36) PRIMARY KEY ASC, sha256 VARCHAR(64), md5 VARCHAR(32))");
 					this.DB.exec("UPDATE config SET value='1.1.2' WHERE name='schema'");
-				case "1.1.2":
+			}
+			
+			if (this.GetSchema().equals("1.1.2")) {
+			
 					this.DB.exec("ALTER TABLE hashlist ADD COLUMN hashtype VARCHAR(255)");
 					this.DB.exec("UPDATE config SET value='1.1.3' WHERE name='schema'");
-				case "1.1.3":
+			}
+			
+			if (this.GetSchema().equals("1.1.3")) {
+				
 					this.DB.exec("CREATE TABLE file_revision (uuid VARCHAR(36) PRIMARY KEY ASC, fileid VARCHAR(36), current_hash VARCHAR(36), previous_hash VARCHAR(36), date TIMESTAMP)");
 					this.DB.exec("UPDATE config SET value='1.1.4' WHERE name='schema'");
-				case "1.1.4":
+			}
+			
+			if (this.GetSchema().equals("1.1.4")) {
 					this.DB.exec("CREATE TABLE filelist (uuid VARCHAR(36) PRIMARY KEY ASC, domain VARCHAR(36), filename VARCHAR(255), fileid VARCHAR(36))");
 					this.DB.exec("UPDATE config SET value='1.1.5' WHERE name='schema'");
+			
 			}
 			this.CommitTransaction();
 		} catch (SQLiteException ex) {
