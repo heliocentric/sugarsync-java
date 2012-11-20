@@ -1,2 +1,2 @@
 #!/bin/sh
-"java" -classpath ./dist/lib -jar ./dist/sugarsync-java.jar $*
+cd dist && "java" -jar sugarsync-java.jar $*
