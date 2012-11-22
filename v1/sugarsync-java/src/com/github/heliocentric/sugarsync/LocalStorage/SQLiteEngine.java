@@ -8,6 +8,7 @@ import com.almworks.sqlite4java.SQLiteConnection;
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
 import java.io.File;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -212,6 +213,12 @@ public class SQLiteEngine extends StorageEngine {
 	protected String AddFolderRec() throws StorageEngineException {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
-	
+
+	@Override
+	public FileID getFileID(Domain domain, String file) {
+		FileID fileid = new FileID();
+		fileid.setUUID(UUID.randomUUID().toString());
+		return fileid;
+	}
 	
 }

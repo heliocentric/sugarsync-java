@@ -24,28 +24,29 @@ public abstract class StorageEngine {
 	
 	public abstract Integer getAttributeInt(StorageObject Object, String Name);
 	public abstract boolean setAttributeInt(StorageObject Object, String Name, Integer Value);
-	
-	public void AddFolder(String Folder) throws StorageEngineException {
+	public abstract FileID getFileID(Domain domain, String file);
+	public void AddFolder(Domain domain, String Folder) throws StorageEngineException {
 		File root = new File(Folder);
 		File[] list = root.listFiles();
 		if (list != null) {
 			for (File file : list) {
 				if (file.isDirectory()) {
-					this.AddFolder(file.getAbsolutePath());
+					this.AddFolder(domain, file.getAbsolutePath());
 				} else if (file.isFile()) {
-					this.AddFile(file.getAbsolutePath());
+					this.AddFile(domain, file.getAbsolutePath());
 				}
 			}
 		}
 	}
-	public void AddFile(String File) throws StorageEngineException {
-		System.out.println(File);
+	public void AddFile(Domain domain, String File) throws StorageEngineException {
+		System.out.println(File + " = " + this.getFileID(domain, File).toString());
 	}
 
 	public void AddDomain(String Folder) throws StorageEngineException {
 		try {
 			this.BeginTransaction();
-			this.AddFolder(Folder);
+			Domain domain = new Domain();
+			this.AddFolder(domain, Folder);
 			this.CommitTransaction();
 		} catch (StorageEngineException e) {
 			this.RollbackTransaction();
