@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  *
  * @author Helio
  */
-public class SQLiteEngine implements StorageEngine {
+public class SQLiteEngine extends StorageEngine {
 	public SQLiteEngine() {
 		this.filename = System.getProperty("java.io.tmpdir") + File.separator + "synchro.db";
 	}
@@ -79,6 +79,11 @@ public class SQLiteEngine implements StorageEngine {
 			if (this.GetSchema().equals("1.1.4")) {
 					this.DB.exec("CREATE TABLE filelist (uuid VARCHAR(36) PRIMARY KEY ASC, domain VARCHAR(36), filename VARCHAR(255), fileid VARCHAR(36))");
 					this.DB.exec("UPDATE config SET value='1.1.5' WHERE name='schema'");
+			
+			}
+			if (this.GetSchema().equals("1.1.5")) {
+					this.DB.exec("CREATE TABLE domain (uuid VARCHAR(36) PRIMARY KEY ASC, localpath VARCHAR(255))");
+					this.DB.exec("UPDATE config SET value='1.1.6' WHERE name='schema'");
 			
 			}
 			this.CommitTransaction();
@@ -151,9 +156,62 @@ public class SQLiteEngine implements StorageEngine {
 		return "0";
 	}
 
+
 	@Override
-	public void AddFolder(String Folder) {
-		
+	protected String GetDomainObject(String Folder) throws StorageEngineException {
+		String retval = "";
+		return retval;
 	}
+
+	@Override
+	public String getAttributeString(StorageObject Object, String Name) {
+		return (String) this.getAttribute(Object, Name, "String");
+	}
+	@Override
+	public boolean setAttributeString(StorageObject Object, String Name, String Value) {
+		boolean retval;
+		try {
+			String query = "UPDATE " + Object.getTable() + " SET " + Name + "='" + Value + "' WHERE uuid='" + Object.getUUID() + "'";
+			this.DB.exec(query);
+			retval = true;
+		} catch (SQLiteException ex) {
+			Logger.getLogger(SQLiteEngine.class.getName()).log(Level.SEVERE, null, ex);
+			retval = false;
+		}
+		return retval;
+	}
+	
+	@Override
+	public Integer getAttributeInt(StorageObject Object, String Name) {
+		return (Integer) this.getAttribute(Object, Name, "Integer");
+	}
+	
+	@Override
+	public boolean setAttributeInt(StorageObject Object, String Name, Integer Value) {
+		return this.setAttributeString(Object, Name, Value.toString());
+	}
+	
+	private Object getAttribute(StorageObject Object, String Name, String Type) {
+		SQLiteStatement st;
+		try {
+			st = this.DB.prepare("SELECT " + Name + " FROM " + Object.getTable() + " WHERE uuid = '" + Object.getUUID() + "'");
+			while (st.step()) {
+				if (Type.equals("String")) {
+					return st.columnString(0);
+				} else if (Type.equals("Integer")) {
+					return st.columnInt(0);
+				}
+			}
+		} catch (SQLiteException ex) {
+			Logger.getLogger(SQLiteEngine.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		return null;
+	}
+
+	@Override
+	protected String AddFolderRec() throws StorageEngineException {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+	
 	
 }

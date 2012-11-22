@@ -34,7 +34,11 @@ public class Synchro {
 		} catch (StorageEngineException ex) {
 			Logger.getLogger(Synchro.class.getName()).log(Level.SEVERE, null, ex);
 		}
-		this.DataEngine.AddFolder(this.settings.get("path"));
+		try {
+			this.DataEngine.AddDomain(this.settings.get("path"));
+		} catch (StorageEngineException ex) {
+			Logger.getLogger(Synchro.class.getName()).log(Level.SEVERE, null, ex);
+		}
 	}
 	public StorageEngine DataEngine;
 }
