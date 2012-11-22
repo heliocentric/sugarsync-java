@@ -8,6 +8,6 @@ package com.github.heliocentric.sugarsync.LocalStorage;
  *
  * @author helio
  */
-public class File {
+public class FileID {
 	private StorageObject object;
 }
