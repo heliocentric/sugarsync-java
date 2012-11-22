@@ -28,7 +28,6 @@ public abstract class StorageEngine {
 	}
 
 	public void AddDomain(String Folder) throws StorageEngineException {
-		String DomainUUID;
 		try {
 			this.BeginTransaction();
 			this.AddFolder(Folder);
