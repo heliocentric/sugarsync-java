@@ -10,3 +10,4 @@
 /v1/sugarsync-java/nbproject/private/private.xml
 /v1/sugarsync-java/dist/*
 *~
+*.java~
