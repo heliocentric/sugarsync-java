@@ -5,6 +5,11 @@
 package com.github.heliocentric.sugarsync.LocalStorage;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
 
 /**
  *
@@ -39,7 +44,11 @@ public abstract class StorageEngine {
 		}
 	}
 	public void AddFile(Domain domain, String File) throws StorageEngineException {
-		System.out.println(this.getFileID(domain, File).toString());
+		try {
+			System.out.println(this.getFileID(domain, File).toString() + " " + getDigestString(new FileInputStream(File), "SHA-256") + " " + getDigestString(new FileInputStream(File), "MD5"));
+		} catch (Throwable th) {
+		}
+		
 	}
 
 	public void AddDomain(String Folder) throws StorageEngineException {
@@ -51,5 +60,29 @@ public abstract class StorageEngine {
 		} catch (StorageEngineException e) {
 			this.RollbackTransaction();
 		}
+	}
+	private static final int BUFFER_SIZE = 2048;
+ 
+	private static byte[] getDigest(InputStream in, String algorithm) throws Throwable {
+		MessageDigest md = MessageDigest.getInstance(algorithm);
+		try {
+			DigestInputStream dis = new DigestInputStream(in, md);
+			byte[] buffer = new byte[BUFFER_SIZE];
+			while (dis.read(buffer) != -1) {
+			}
+			dis.close();
+		} finally {
+			in.close();
+		}
+		return md.digest();
+	}
+ 
+	private static String getDigestString(InputStream in, String algorithm) throws Throwable {
+		byte[] digest = getDigest(in, algorithm);
+		StringBuilder sb = new StringBuilder();
+  		for (int i = 0; i < digest.length; i++) {
+   			sb.append(String.format("%x", digest[i]));
+		}
+		return sb.toString();
 	}
 }
