@@ -229,8 +229,9 @@ public class SQLiteEngine extends StorageEngine {
 			st = this.DB.prepare("SELECT uuid FROM fileid WHERE domain = '" + domain.object.getUUID() + "' AND path = '" + file + "'");
 			while (st.step()) {
 				uuid = st.columnString(0);
+				st = null;
 			}
-			st = null;
+			System.out.println(file);
 			this.DB.exec("INSERT INTO fileid (uuid,domain,path) VALUES('" + uuid + "','" + domain.object.getUUID()+ "','" + file + "')");
 
 		} catch (SQLiteException ex) {

@@ -24,7 +24,7 @@ public abstract class StorageEngine {
 	
 	public abstract Integer getAttributeInt(StorageObject Object, String Name);
 	public abstract boolean setAttributeInt(StorageObject Object, String Name, Integer Value);
-	public abstract FileID getFileID(Domain domain, String file) throws StorageEngineException;
+	public abstract FileID getFileID(Domain domain, String file);
 	public void AddFolder(Domain domain, String Folder) throws StorageEngineException {
 		File root = new File(Folder);
 		File[] list = root.listFiles();

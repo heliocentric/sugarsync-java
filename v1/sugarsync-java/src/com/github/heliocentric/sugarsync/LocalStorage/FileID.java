@@ -9,18 +9,14 @@ package com.github.heliocentric.sugarsync.LocalStorage;
  * @author helio
  */
 public class FileID {
-	private StorageObject object;
-	private String UUID;
-	public boolean setUUID(String uuid) {
-		boolean retval = true;
-		this.UUID = uuid;
-		return retval;
-	}
-	public String getUUID() {
-		return this.UUID;
-	}
+	public StorageObject object;
 	@Override
 	public String toString() {
-		return this.UUID;
+		return this.object.getUUID();
+	}
+	
+	public FileID() {
+		this.object = new StorageObject();
+		
 	}
 }
