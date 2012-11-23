@@ -227,7 +227,7 @@ public class SQLiteEngine extends StorageEngine {
 		SQLiteStatement st;
 		try {
 			st = this.DB.prepare("SELECT uuid FROM fileid WHERE domain = '" + domain.object.getUUID() + "' AND path = '" + file + "'");
-			while(st.step()) {
+			while (st.step()) {
 				uuid = st.columnString(0);
 			}
 			System.out.println(uuid);
