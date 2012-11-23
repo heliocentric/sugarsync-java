@@ -8,3 +8,5 @@
 /v1/sugarsync-java/dist/sugarsync-java.jar
 /v1/sugarsync-java/nbproject/private/private.properties
 /v1/sugarsync-java/nbproject/private/private.xml
+/v1/sugarsync-java/dist/*
+*~
