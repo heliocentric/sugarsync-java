@@ -39,7 +39,7 @@ public abstract class StorageEngine {
 		}
 	}
 	public void AddFile(Domain domain, String File) throws StorageEngineException {
-		System.out.println(File + " = " + this.getFileID(domain, File).toString());
+		System.out.println(this.getFileID(domain, File).toString());
 	}
 
 	public void AddDomain(String Folder) throws StorageEngineException {

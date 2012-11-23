@@ -24,7 +24,7 @@ public abstract class StorageEngine {
 	
 	public abstract Integer getAttributeInt(StorageObject Object, String Name);
 	public abstract boolean setAttributeInt(StorageObject Object, String Name, Integer Value);
-	public abstract FileID getFileID(Domain domain, String file);
+	public abstract FileID getFileID(Domain domain, String file) throws StorageEngineException;
 	public void AddFolder(Domain domain, String Folder) throws StorageEngineException {
 		File root = new File(Folder);
 		File[] list = root.listFiles();
@@ -39,7 +39,7 @@ public abstract class StorageEngine {
 		}
 	}
 	public void AddFile(Domain domain, String File) throws StorageEngineException {
-		System.out.println(File + " = " + this.getFileID(domain, File).toString());
+		System.out.println(this.getFileID(domain, File).toString());
 	}
 
 	public void AddDomain(String Folder) throws StorageEngineException {

@@ -230,7 +230,6 @@ public class SQLiteEngine extends StorageEngine {
 			while (st.step()) {
 				uuid = st.columnString(0);
 			}
-			System.out.println(uuid);
 			if (uuid.equals("")) {
 				this.DB.exec("INSERT INTO fileid (uuid,domain,path) VALUES('" + uuid + "','" + domain.object.getUUID() + "','" + file + "')");
 			}
