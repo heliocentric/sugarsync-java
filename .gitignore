@@ -1,13 +1,10 @@
 *.class
-
-# Package Files #
+*.java~
 *.war
 *.ear
-/v1/sugarsync-java/dist/README.TXT
-/v1/sugarsync-java/dist/lib/sqlite4java.jar
-/v1/sugarsync-java/dist/sugarsync-java.jar
-/v1/sugarsync-java/nbproject/private/private.properties
-/v1/sugarsync-java/nbproject/private/private.xml
-/v1/sugarsync-java/dist/*
-*~
-*.java~
+v1/sugarsync-java/dist/README.TXT
+v1/sugarsync-java/dist/lib/sqlite4java.jar
+v1/sugarsync-java/dist/sugarsync-java.jar
+v1/sugarsync-java/nbproject/private/private.properties
+v1/sugarsync-java/nbproject/private/private.xml
+v1/sugarsync-java/dist/*

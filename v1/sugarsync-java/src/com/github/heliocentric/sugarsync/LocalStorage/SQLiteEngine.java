@@ -227,14 +227,16 @@ public class SQLiteEngine extends StorageEngine {
 		SQLiteStatement st;
 		try {
 			st = this.DB.prepare("SELECT uuid FROM fileid WHERE domain = '" + domain.object.getUUID() + "' AND path = '" + file + "'");
-			while (st.step()) {
+			while(st.step()) {
 				uuid = st.columnString(0);
 			}
-			st = null;
-			this.DB.exec("INSERT INTO fileid (uuid,domain,path) VALUES('" + uuid + "','" + domain.object.getUUID()+ "','" + file + "')");
-
+			System.out.println(uuid);
+			if (uuid.equals("")) {
+				this.DB.exec("INSERT INTO fileid (uuid,domain,path) VALUES('" + uuid + "','" + domain.object.getUUID() + "','" + file + "')");
+			}
 		} catch (SQLiteException ex) {
 			Logger.getLogger(SQLiteEngine.class.getName()).log(Level.SEVERE, null, ex);
+			st = null;
 			throw new StorageEngineException();
 		}
 		fileid.object.setEngine(this);

@@ -12,7 +12,13 @@ public class FileID {
 	public StorageObject object;
 	@Override
 	public String toString() {
-		return this.object.getUUID();
+		return this.getUUID();
+	}
+	public String getPath() {
+		return this.object.getAttributeString("path");
+	}
+	public String getUUID() {
+		return this.object.getAttributeString("uuid");
 	}
 	
 	public FileID() {
