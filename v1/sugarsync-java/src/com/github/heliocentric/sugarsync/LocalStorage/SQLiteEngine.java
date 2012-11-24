@@ -223,7 +223,7 @@ public class SQLiteEngine extends StorageEngine {
 	@Override
 	public FileID getFileID(Domain domain, String file) throws StorageEngineException {
 		FileID fileid = new FileID();
-		String uuid = UUID.randomUUID().toString();
+		String uuid = "";
 		SQLiteStatement st;
 		try {
 			st = this.DB.prepare("SELECT uuid FROM fileid WHERE domain = '" + domain.object.getUUID() + "' AND path = '" + file + "'");
@@ -231,6 +231,7 @@ public class SQLiteEngine extends StorageEngine {
 				uuid = st.columnString(0);
 			}
 			if (uuid.equals("")) {
+				uuid = UUID.randomUUID().toString();
 				this.DB.exec("INSERT INTO fileid (uuid,domain,path) VALUES('" + uuid + "','" + domain.object.getUUID() + "','" + file + "')");
 			}
 		} catch (SQLiteException ex) {
