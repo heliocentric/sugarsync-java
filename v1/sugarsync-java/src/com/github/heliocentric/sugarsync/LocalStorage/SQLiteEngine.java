@@ -91,7 +91,14 @@ public class SQLiteEngine extends StorageEngine {
 				this.DB.exec("ALTER TABLE fileid ADD COLUMN domain VARCHAR(36)");
 				this.DB.exec("ALTER TABLE fileid ADD COLUMN path VARCHAR(255)");
 				this.DB.exec("UPDATE config SET value='1.1.7' WHERE name='schema'");
-			
+			}
+			if (this.GetSchema().equals("1.1.7")) {
+				this.DB.exec("CREATE TABLE account (uuid VARCHAR(36) PRIMARY KEY ASC, type VARCHAR(36), username VARCHAR(255), password VARCHAR(255))");
+				this.DB.exec("UPDATE config SET value='1.1.8' WHERE name='schema'");
+			}
+			if (this.GetSchema().equals("1.1.8")) {
+				this.DB.exec("ALTER TABLE file_revision RENAME TO revision");
+				this.DB.exec("UPDATE config SET value='1.1.9' WHERE name='schema'");
 			}
 			this.CommitTransaction();
 		} catch (SQLiteException ex) {
