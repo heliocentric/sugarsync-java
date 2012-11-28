@@ -44,8 +44,21 @@ public abstract class StorageEngine {
 		}
 	}
 	public void AddFile(Domain domain, String File) throws StorageEngineException {
+		FileID file_element;
+		String sha256_hash;
+		long previous_date;
+		String previous_hash;
+		long last_modified = new File(File).lastModified();
 		try {
-			System.out.println(this.getFileID(domain, File).toString() + " " + getDigestString(new FileInputStream(File), "SHA-256") + " " + getDigestString(new FileInputStream(File), "MD5"));
+			file_element = this.getFileID(domain, File);
+			if (file_element.isNew()) {
+				previous_date = 0;
+				previous_hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+			} else {
+				
+			}
+			sha256_hash = getDigestString(new FileInputStream(File), "SHA-256");
+			System.out.println(file_element.toString() + " " + last_modified + " " + sha256_hash); 
 		} catch (Throwable th) {
 		}
 		

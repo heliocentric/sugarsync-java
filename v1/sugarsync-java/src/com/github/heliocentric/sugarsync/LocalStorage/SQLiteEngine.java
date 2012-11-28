@@ -211,7 +211,7 @@ public class SQLiteEngine extends StorageEngine {
 	public boolean setAttributeInt(StorageObject Object, String Name, Integer Value) {
 		return this.setAttributeString(Object, Name, Value.toString());
 	}
-	
+
 	private Object getAttribute(StorageObject Object, String Name, String Type) {
 		SQLiteStatement st;
 		try {
@@ -247,6 +247,7 @@ public class SQLiteEngine extends StorageEngine {
 			if (uuid.equals("")) {
 				uuid = UUID.randomUUID().toString();
 				this.DB.exec("INSERT INTO fileid (uuid,domain,path) VALUES('" + uuid + "','" + domain.object.getUUID() + "','" + file + "')");
+				fileid.object.SetNew();
 			}
 		} catch (SQLiteException ex) {
 			Logger.getLogger(SQLiteEngine.class.getName()).log(Level.SEVERE, null, ex);
@@ -256,6 +257,7 @@ public class SQLiteEngine extends StorageEngine {
 		fileid.object.setEngine(this);
 		fileid.object.setTable("fileid");
 		fileid.object.setUUID(uuid);
+		fileid.object.SetNew();
 		return fileid;
 	}
 	

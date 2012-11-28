@@ -30,6 +30,10 @@ public class FileID {
 		return this.object.getAttributeString("uuid");
 	}
 	
+	public boolean isNew() {
+		return this.object.IsNew();
+	}
+	
 	public FileID() {
 		this.object = new StorageObject();
 	}
