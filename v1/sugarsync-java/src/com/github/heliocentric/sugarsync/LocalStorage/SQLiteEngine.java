@@ -7,6 +7,7 @@ package com.github.heliocentric.sugarsync.LocalStorage;
 import com.almworks.sqlite4java.SQLiteConnection;
 import com.almworks.sqlite4java.SQLiteException;
 import com.almworks.sqlite4java.SQLiteStatement;
+import com.github.heliocentric.sugarsync.PropertyList;
 import java.io.File;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -82,31 +83,39 @@ public class SQLiteEngine extends StorageEngine {
 					this.DB.exec("UPDATE config SET value='1.1.5' WHERE name='schema'");
 			
 			}
+			
 			if (this.GetSchema().equals("1.1.5")) {
 					this.DB.exec("CREATE TABLE domain (uuid VARCHAR(36) PRIMARY KEY ASC, localpath VARCHAR(255))");
 					this.DB.exec("UPDATE config SET value='1.1.6' WHERE name='schema'");
 			
 			}
+			
 			if (this.GetSchema().equals("1.1.6")) {
 				this.DB.exec("ALTER TABLE fileid ADD COLUMN domain VARCHAR(36)");
 				this.DB.exec("ALTER TABLE fileid ADD COLUMN path VARCHAR(255)");
 				this.DB.exec("UPDATE config SET value='1.1.7' WHERE name='schema'");
 			}
+			
 			if (this.GetSchema().equals("1.1.7")) {
 				this.DB.exec("CREATE TABLE account (uuid VARCHAR(36) PRIMARY KEY ASC, type VARCHAR(36), username VARCHAR(255), password VARCHAR(255))");
 				this.DB.exec("UPDATE config SET value='1.1.8' WHERE name='schema'");
 			}
+			
 			if (this.GetSchema().equals("1.1.8")) {
 				this.DB.exec("ALTER TABLE file_revision RENAME TO revision");
 				this.DB.exec("UPDATE config SET value='1.1.9' WHERE name='schema'");
 			}
+			
 			if (this.GetSchema().equals("1.1.9")) {
 				this.DB.exec("UPDATE config SET value='1.1.10' WHERE name='schema'");
 			}
+			
 			if (this.GetSchema().equals("1.1.10")) {
 				this.DB.exec("CREATE INDEX indx_revision_fileid ON revision (fileid)");
 				this.DB.exec("UPDATE config SET value='1.1.11' WHERE name='schema'");
 			}
+			
+			
 			this.CommitTransaction();
 		} catch (SQLiteException ex) {
 			Logger.getLogger(SQLiteEngine.class.getName()).log(Level.SEVERE, null, ex);
@@ -237,29 +246,61 @@ public class SQLiteEngine extends StorageEngine {
 	@Override
 	public FileID getFileID(Domain domain, String file) throws StorageEngineException {
 		FileID fileid = new FileID();
-		String uuid = "";
+		PropertyList prop = new PropertyList();
+		prop.put("domain",domain.object.getUUID());
+		prop.put("path", file);
+		try {
+		fileid.object = this.getExactRecord("fileid",prop);
+		}
+		catch (StorageEngineException e) {
+			if (e.getType().equals("com.github.heliocentric.sugarsync.LocalStorage.RecordNotFound")) {
+				fileid.object = this.getNewRecord("fileid");
+				fileid.setPath(file);
+				fileid.setDomain(domain.object.getUUID());
+			}
+		}
+		return fileid;
+	}
+
+	public StorageObject getExactRecord(String table, PropertyList Matches) throws StorageEngineException {
+		StorageObject object = new StorageObject();
+		object.setEngine(this);
+		object.setTable(table);
+		String retuuid;
 		SQLiteStatement st;
 		try {
 			String query;
-			query = "SELECT uuid FROM fileid WHERE domain = '" + domain.object.getUUID() + "' AND path LIKE '" + file + "'";
-			st = this.DB.prepare(query);
-			while (st.step()) {
-				uuid = st.columnString(0);
+			query = "SELECT uuid FROM " + table;
+			boolean firstwhere = true;
+			for(String s : Matches.Map.keySet()) {
+				String val = Matches.get(s);
+				if (val != null) {
+					if (firstwhere == true) {
+						query = query + " WHERE";
+					}
+					else {
+						query = query + " AND";
+					} 
+					query = query + " " + s + " LIKE '" + val + "'";
+					firstwhere = false;
+				}
 			}
-			if (uuid.equals("")) {
-				fileid.object = this.getNewRecord("fileid");
-				fileid.setPath(file);
-			} else {
-				fileid.object.setEngine(this);
-				fileid.object.setTable("fileid");
-				fileid.object.setUUID(uuid);
+			System.out.println(query);
+			st = this.DB.prepare(query);
+			retuuid = "";
+			while (st.step()) {
+				retuuid = st.columnString(0);
+			}
+			System.out.println(retuuid);
+			if (retuuid.equals("")) {
+				throw new StorageEngineException("com.github.heliocentric.sugarsync.LocalStorage.RecordNotFound");
 			}
 		} catch (SQLiteException ex) {
 			Logger.getLogger(SQLiteEngine.class.getName()).log(Level.SEVERE, null, ex);
 			st = null;
 			throw new StorageEngineException();
 		}
-		return fileid;
+		return object;
 	}
 	public StorageObject getNewRecord(String table) {
 		StorageObject object = new StorageObject();
