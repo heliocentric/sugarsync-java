@@ -10,6 +10,14 @@ package com.github.heliocentric.sugarsync.LocalStorage;
  */
 public class StorageObject {
 	private String UUID;
+	private boolean NewRecord;
+	public boolean IsNew() {
+		return NewRecord;
+	}
+	public boolean SetNew() {
+		this.NewRecord = true;
+		return true;
+	}
 	public String getUUID() {
 		return this.UUID;
 	}
@@ -34,9 +42,10 @@ public class StorageObject {
 	}
 			
 	public StorageObject() {
-		
+		this.NewRecord = false;
 	}
 	public StorageObject(StorageEngine engine) {
+		this.NewRecord = false;
 		this.Engine = engine;
 	}
 	public String getAttributeString(String Name) {
