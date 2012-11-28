@@ -14,20 +14,31 @@ public class FileID {
 	public String toString() {
 		return this.getPath() + " = " + this.getUUID();
 	}
+	
 	public String getPath() {
 		return this.object.getAttributeString("path");
 	}
 	public boolean setPath(String var) {
 		return this.object.setAttributeString("path", var);
 	}
+	
 	public String getDomain() {
 		return this.object.getAttributeString("domain");
 	}
 	public boolean setDomain(String var) {
 		return this.object.setAttributeString("domain", var);
 	}
+	
 	public String getUUID() {
 		return this.object.getAttributeString("uuid");
+	}
+	
+	public void AddRevision(long date, String current, String previous) throws StorageEngineException {
+		this.object.BeginTransaction();
+		
+		
+		
+		this.object.CommitTransaction();
 	}
 	
 	public boolean isNew() {

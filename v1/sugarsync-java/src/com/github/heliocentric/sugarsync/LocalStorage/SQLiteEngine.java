@@ -240,25 +240,39 @@ public class SQLiteEngine extends StorageEngine {
 		String uuid = "";
 		SQLiteStatement st;
 		try {
-			st = this.DB.prepare("SELECT uuid FROM fileid WHERE domain = '" + domain.object.getUUID() + "' AND path = '" + file + "'");
+			String query;
+			query = "SELECT uuid FROM fileid WHERE domain = '" + domain.object.getUUID() + "' AND path LIKE '" + file + "'";
+			st = this.DB.prepare(query);
 			while (st.step()) {
 				uuid = st.columnString(0);
 			}
 			if (uuid.equals("")) {
-				uuid = UUID.randomUUID().toString();
-				this.DB.exec("INSERT INTO fileid (uuid,domain,path) VALUES('" + uuid + "','" + domain.object.getUUID() + "','" + file + "')");
-				fileid.object.SetNew();
+				fileid.object = this.getNewRecord("fileid");
+				fileid.setPath(file);
+			} else {
+				fileid.object.setEngine(this);
+				fileid.object.setTable("fileid");
+				fileid.object.setUUID(uuid);
 			}
 		} catch (SQLiteException ex) {
 			Logger.getLogger(SQLiteEngine.class.getName()).log(Level.SEVERE, null, ex);
 			st = null;
 			throw new StorageEngineException();
 		}
-		fileid.object.setEngine(this);
-		fileid.object.setTable("fileid");
-		fileid.object.setUUID(uuid);
-		fileid.object.SetNew();
 		return fileid;
 	}
-	
+	public StorageObject getNewRecord(String table) {
+		StorageObject object = new StorageObject();
+		try {
+			object.setEngine(this);
+			object.setTable(table);
+			object.setUUID(UUID.randomUUID().toString());
+			String query = "INSERT INTO " + table + " (uuid) VALUES('" + object.getUUID() + "')";
+			this.DB.exec(query);
+			object.SetNew();
+		} catch (SQLiteException ex) {
+			Logger.getLogger(SQLiteEngine.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		return object;
+	}
 }
