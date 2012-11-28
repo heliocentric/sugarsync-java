@@ -100,6 +100,9 @@ public class SQLiteEngine extends StorageEngine {
 				this.DB.exec("ALTER TABLE file_revision RENAME TO revision");
 				this.DB.exec("UPDATE config SET value='1.1.9' WHERE name='schema'");
 			}
+			if (this.GetSchema().equals("1.1.9")) {
+				this.DB.exec("UPDATE config SET value='1.1.10' WHERE name='schema'");
+			}
 			this.CommitTransaction();
 		} catch (SQLiteException ex) {
 			Logger.getLogger(SQLiteEngine.class.getName()).log(Level.SEVERE, null, ex);

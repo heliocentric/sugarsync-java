@@ -17,12 +17,23 @@ public class FileID {
 	public String getPath() {
 		return this.object.getAttributeString("path");
 	}
+	public boolean setPath(String var) {
+		return this.object.setAttributeString("path", var);
+	}
+	public String getDomain() {
+		return this.object.getAttributeString("domain");
+	}
+	public boolean setDomain(String var) {
+		return this.object.setAttributeString("domain", var);
+	}
 	public String getUUID() {
 		return this.object.getAttributeString("uuid");
 	}
 	
 	public FileID() {
 		this.object = new StorageObject();
-		
+	}
+	public FileID(StorageObject object) {
+		this.object = object;
 	}
 }
