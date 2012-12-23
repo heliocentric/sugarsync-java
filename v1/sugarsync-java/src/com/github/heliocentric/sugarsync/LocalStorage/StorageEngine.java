@@ -30,6 +30,8 @@ public abstract class StorageEngine {
 	public abstract Integer getAttributeInt(StorageObject Object, String Name);
 	public abstract boolean setAttributeInt(StorageObject Object, String Name, Integer Value);
 	public abstract FileID getFileID(Domain domain, String file) throws StorageEngineException;
+        public abstract Revision GetRevision(String fileid, Boolean MostRecent) throws StorageEngineException;
+        public static String EmptyHash = "610de42b-3cf9-4da4-bef2-c6c6405c0a60";
 	public void AddFolder(Domain domain, String Folder) throws StorageEngineException {
 		File root = new File(Folder);
 		File[] list = root.listFiles();
@@ -46,6 +48,7 @@ public abstract class StorageEngine {
 	public void AddFile(Domain domain, String File) throws StorageEngineException {
 		FileID file_element;
 		String sha256_hash;
+                String md5_hash;
 		long previous_date;
 		String previous_hash;
 		long last_modified = new File(File).lastModified();
@@ -53,12 +56,18 @@ public abstract class StorageEngine {
 			file_element = this.getFileID(domain, File);
 			if (file_element.isNew()) {
 				previous_date = 0;
-				previous_hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+				previous_hash = StorageEngine.EmptyHash;
 			} else {
-				
+				Revision rev = file_element.getCurrentRevision();
+                                previous_date = Long.parseLong(rev.getDate());
+                                previous_hash = rev.getCurrentHash();
 			}
-			sha256_hash = getDigestString(new FileInputStream(File), "SHA-256");
-			System.out.println(file_element.toString() + " " + last_modified + " " + sha256_hash); 
+                        if (last_modified > previous_date) {
+                        	sha256_hash = getDigestString(new FileInputStream(File), "SHA-256");
+                                
+                        	md5_hash = getDigestString(new FileInputStream(File), "MD5");
+                        	System.out.println(file_element.toString() + " " + last_modified + " " + sha256_hash); 
+                        }
 		} catch (Throwable th) {
 		}
 		

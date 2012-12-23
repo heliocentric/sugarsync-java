@@ -11,7 +11,6 @@ package com.github.heliocentric.sugarsync.LocalStorage;
 public class Revision {
 	public StorageObject object;
 	public Revision() {
-		
 	}
 	public Revision(StorageObject object) {
 		this.object = object;
@@ -49,4 +48,8 @@ public class Revision {
 	public String getUUID() {
 		return this.object.getAttributeString("uuid");
 	}
+    @Override
+        public String toString() {
+            return this.getUUID() + " = " + this.getDate() + " " + this.getCurrentHash();
+        }
 }

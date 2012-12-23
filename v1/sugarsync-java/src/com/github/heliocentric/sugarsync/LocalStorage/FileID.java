@@ -33,6 +33,9 @@ public class FileID {
 		return this.object.getAttributeString("uuid");
 	}
 	
+	public Revision getCurrentRevision() throws StorageEngineException {
+            return this.object.getEngine().GetRevision(this.getUUID(),true);
+        }
 	public void AddRevision(long date, String current, String previous) throws StorageEngineException {
 		this.object.BeginTransaction();
 		
@@ -44,7 +47,6 @@ public class FileID {
 	public boolean isNew() {
 		return this.object.IsNew();
 	}
-	
 	public FileID() {
 		this.object = new StorageObject();
 	}
