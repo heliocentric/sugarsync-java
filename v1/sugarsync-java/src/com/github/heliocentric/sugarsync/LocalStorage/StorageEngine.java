@@ -126,5 +126,5 @@ public abstract class StorageEngine {
 	public StorageObject NewObject(String main_table) {
 		return this.InsertNewObject(main_table);
 	}
-	public abstract StorageObject InsertNewObject(main_table);
+	public abstract StorageObject InsertNewObject(String main_table);
 }

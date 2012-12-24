@@ -127,12 +127,15 @@ public class SQLiteEngine extends StorageEngine {
 			}
 			if (this.GetSchema().equals("1.1.12")) {
 				this.DB.exec("CREATE TABLE _x_object (uuid VARCHAR(36) PRIMARY KEY ASC, link VARCHAR(36), origin VARCHAR(36), date_allocated TIMESTAMP, date_used TIMESTAMP, date_disused TIMESTAMP)");
-				this.DB.exec("INSERT INTO config (name,value) VALUES('hostid'.'" + UUID.randomUUID().toString() + "')");
-				this.DB.exec("UPDATE config SET value='1.1.13' WHERE name='schema'");
 				int count = 0;
 				while (count <= 2000) {
 					String query = "INSERT INTO _x_object (uuid,origin,date_allocated) VALUES('" + UUID.randomUUID().toString() + "','" + this.GetHostID() + "','" + System.currentTimeMillis() + "')";
+					this.DB.exec(query);
+					count = count + 1;
 				}
+				this.DB.exec("INSERT INTO config (name,value) VALUES('hostid', '" + UUID.randomUUID().toString() + "')");
+				this.DB.exec("UPDATE config SET value='1.1.13' WHERE name='schema'");
+
 			}
 
 			this.CommitTransaction();
@@ -202,7 +205,7 @@ public class SQLiteEngine extends StorageEngine {
 		}
 		return "0";
 	}
-		@Override
+	
 	public String GetHostID() throws StorageEngineException {
 		try {
 			SQLiteStatement st = this.DB.prepare("SELECT value FROM config WHERE name = 'hostid'");
@@ -390,7 +393,7 @@ public class SQLiteEngine extends StorageEngine {
 	}
 
 	@Override
-	public StorageObject InsertNewObject(main_table ) {
+	public StorageObject InsertNewObject(String main_table ) {
 		StorageObject object = new StorageObject();
 		
 		return object;
