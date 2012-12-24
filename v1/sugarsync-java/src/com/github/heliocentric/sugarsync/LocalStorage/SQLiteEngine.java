@@ -125,6 +125,15 @@ public class SQLiteEngine extends StorageEngine {
 				this.DB.exec("INSERT INTO hashlist (uuid,sha256,md5) VALUES('" + StorageEngine.EmptyHash + "','e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855','d41d8cd98f00b204e9800998ecf8427e')");
 				this.DB.exec("UPDATE config SET value='1.1.12' WHERE name='schema'");
 			}
+			if (this.GetSchema().equals("1.1.12")) {
+				this.DB.exec("CREATE TABLE _x_object (uuid VARCHAR(36) PRIMARY KEY ASC, link VARCHAR(36), origin VARCHAR(36), date_allocated TIMESTAMP, date_used TIMESTAMP, date_disused TIMESTAMP)");
+				this.DB.exec("INSERT INTO config (name,value) VALUES('hostid'.'" + UUID.randomUUID().toString() + "')");
+				this.DB.exec("UPDATE config SET value='1.1.13' WHERE name='schema'");
+				int count = 0;
+				while (count <= 2000) {
+					String query = "INSERT INTO _x_object (uuid,origin,date_allocated) VALUES('" + UUID.randomUUID().toString() + "','" + this.GetHostID() + "','" + System.currentTimeMillis() + "')";
+				}
+			}
 
 			this.CommitTransaction();
 		} catch (SQLiteException ex) {
@@ -185,6 +194,18 @@ public class SQLiteEngine extends StorageEngine {
 	public String GetSchema() throws StorageEngineException {
 		try {
 			SQLiteStatement st = this.DB.prepare("SELECT value FROM config WHERE name = 'schema'");
+			while (st.step()) {
+				return st.columnString(0);
+			}
+		} catch (SQLiteException e) {
+			throw new StorageEngineException();
+		}
+		return "0";
+	}
+		@Override
+	public String GetHostID() throws StorageEngineException {
+		try {
+			SQLiteStatement st = this.DB.prepare("SELECT value FROM config WHERE name = 'hostid'");
 			while (st.step()) {
 				return st.columnString(0);
 			}
@@ -284,6 +305,7 @@ public class SQLiteEngine extends StorageEngine {
 		return rev;
 	}
 
+	@Override
 	public HashList getHash(String SHA256, String MD5) throws StorageEngineException {
 		HashList hash = new HashList();
 		PropertyList prop = new PropertyList();
@@ -364,6 +386,13 @@ public class SQLiteEngine extends StorageEngine {
 		} catch (SQLiteException ex) {
 			Logger.getLogger(SQLiteEngine.class.getName()).log(Level.SEVERE, null, ex);
 		}
+		return object;
+	}
+
+	@Override
+	public StorageObject InsertNewObject(main_table ) {
+		StorageObject object = new StorageObject();
+		
 		return object;
 	}
 }
