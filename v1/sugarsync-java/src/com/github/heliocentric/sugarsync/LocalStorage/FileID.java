@@ -36,7 +36,7 @@ public class FileID {
 	public Revision getCurrentRevision() throws StorageEngineException {
             return this.object.getEngine().GetRevision(this.getUUID(),true);
         }
-	public void AddRevision(long date, String current, String previous) throws StorageEngineException {
+	public void AddRevision(long date, String previous, String sha256, String md5) throws StorageEngineException {
 		this.object.BeginTransaction();
 		
 		

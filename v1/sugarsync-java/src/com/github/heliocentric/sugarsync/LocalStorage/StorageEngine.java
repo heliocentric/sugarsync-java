@@ -59,15 +59,14 @@ public abstract class StorageEngine {
 				previous_hash = StorageEngine.EmptyHash;
 			} else {
 				Revision rev = file_element.getCurrentRevision();
-                                previous_date = Long.parseLong(rev.getDate());
-                                previous_hash = rev.getCurrentHash();
+				previous_date = Long.parseLong(rev.getDate());
+				previous_hash = rev.getCurrentHash();
 			}
-                        if (last_modified > previous_date) {
-                        	sha256_hash = getDigestString(new FileInputStream(File), "SHA-256");
-                                
-                        	md5_hash = getDigestString(new FileInputStream(File), "MD5");
-                        	System.out.println(file_element.toString() + " " + last_modified + " " + sha256_hash); 
-                        }
+			if (last_modified > previous_date) {
+				sha256_hash = getDigestString(new FileInputStream(File), "SHA-256");
+				md5_hash = getDigestString(new FileInputStream(File), "MD5");
+				file_element.AddRevision(last_modified, previous_hash, sha256_hash, md5_hash);
+			}
 		} catch (Throwable th) {
 		}
 		
