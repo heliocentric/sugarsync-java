@@ -52,7 +52,7 @@ public class FileID {
 		newrev.setDate(String.valueOf(date));
 		newrev.setFileID(this.getUUID());
 		this.object.CommitTransaction();
-	}/
+	}
 	
 	public boolean isNew() {
 		return this.object.IsNew();

@@ -4,6 +4,7 @@
  */
 package com.github.heliocentric.sugarsync.LocalStorage;
 
+import com.github.heliocentric.sugarsync.PropertyList;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -96,8 +97,20 @@ public abstract class StorageEngine {
 			Domain domain = new Domain();
 			this.AddFolder(domain, Folder);
 	}
-	private static final int BUFFER_SIZE = 2048;
-
+	private PropertyList HashAndCopy(String sourcepath, String destinationpath) throws Throwable {
+		MessageDigest md5 = MessageDigest.getInstance("md5");
+		MessageDigest sha256 = MessageDigest.getInstance("sha-256");
+		FileInputStream SourceFile = new FileInputStream(sourcepath);
+		PropertyList props = new PropertyList();
+		try {
+			
+		} finally {
+			
+		}
+		props.put("copied", "false");
+		return props;
+	}
+	private static final int BUFFER_SIZE = 8192;
 	private static byte[] getDigest(InputStream in, String algorithm) throws Throwable {
 		MessageDigest md = MessageDigest.getInstance(algorithm);
 		try {
