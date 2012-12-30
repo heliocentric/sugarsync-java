@@ -63,12 +63,14 @@ public abstract class StorageEngine {
 	}
 
 	public void AddFile(Domain domain, String File) throws StorageEngineException {
+
 		FileID file_element;
 		String sha256_hash;
 		String md5_hash;
 		long previous_date;
 		String previous_hash;
 		long last_modified = new File(File).lastModified();
+
 		try {
 			file_element = this.getFileID(domain, File);
 			if (file_element.isNew()) {
@@ -90,14 +92,9 @@ public abstract class StorageEngine {
 	}
 
 	public void AddDomain(String Folder) throws StorageEngineException {
-		try {
-			this.BeginTransaction();
+
 			Domain domain = new Domain();
 			this.AddFolder(domain, Folder);
-			this.CommitTransaction();
-		} catch (StorageEngineException e) {
-			this.RollbackTransaction();
-		}
 	}
 	private static final int BUFFER_SIZE = 2048;
 

@@ -38,7 +38,6 @@ public class FileID {
         }
 	public void AddRevision(long date, String previous, String sha256, String md5) throws StorageEngineException {
 		this.object.BeginTransaction();
-		
 		HashList hashlist = new HashList();
 		hashlist.object = this.object.getEngine().NewObject("hashlist");
 		
@@ -53,7 +52,7 @@ public class FileID {
 		newrev.setDate(String.valueOf(date));
 		newrev.setFileID(this.getUUID());
 		this.object.CommitTransaction();
-	}
+	}/
 	
 	public boolean isNew() {
 		return this.object.IsNew();
