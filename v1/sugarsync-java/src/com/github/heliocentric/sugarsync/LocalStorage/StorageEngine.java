@@ -83,8 +83,9 @@ public abstract class StorageEngine {
 				previous_hash = rev.getCurrentHash();
 			}
 			if (last_modified > previous_date) {
-				sha256_hash = getDigestString(new FileInputStream(File), "SHA-256");
-				md5_hash = getDigestString(new FileInputStream(File), "MD5");
+				PropertyList prop = this.HashAndCopy(File, "");
+				sha256_hash = prop.get("sha256");
+				md5_hash =  prop.get("md5");
 				file_element.AddRevision(last_modified, previous_hash, sha256_hash, md5_hash);
 			}
 		} catch (Throwable th) {
@@ -103,36 +104,63 @@ public abstract class StorageEngine {
 		FileInputStream SourceFile = new FileInputStream(sourcepath);
 		PropertyList props = new PropertyList();
 		try {
-			
+			boolean end = false;
+			int counter = 0;
+			long previousbpns = 0;
+			int BUFFER_SIZE = StorageEngine.INITIAL_BUFFER_SIZE;
+			long totalbpns;
+			while (end != true) {
+				totalbpns = 0;
+				byte [] buffer = new byte[BUFFER_SIZE];
+				while (2 != 1) {
+					long starttime = System.nanoTime();
+					if (SourceFile.read(buffer) != -1) {
+						md5.update(buffer);
+						sha256.update(buffer);
+						long endtime = System.nanoTime();
+						long duration = (endtime - starttime);
+						totalbpns = totalbpns + duration;
+						counter += 1;
+						if (counter >= 10) {
+							long currentbpns = (counter * BUFFER_SIZE) / totalbpns;
+							long difference = currentbpns - previousbpns;
+							System.out.println("BUFSIZE = " + BUFFER_SIZE + " = Average: " + currentbpns + " Previous: " + previousbpns + " difference: " + difference);
+							if (difference > 100) {
+								BUFFER_SIZE = BUFFER_SIZE * 2;
+							}
+							if (difference < -100) {
+								BUFFER_SIZE = BUFFER_SIZE / 2;
+							}
+							if (BUFFER_SIZE < 128) {
+								BUFFER_SIZE = 128;
+							}
+							previousbpns = currentbpns;
+							break;
+						}
+					} else {
+						end = true;
+						break;
+					}
+				}
+			}
+			SourceFile.close();
 		} finally {
-			
+			SourceFile.close();
 		}
+		props.put("md5",StorageEngine.DigestToString(md5));
+		props.put("sha256",StorageEngine.DigestToString(sha256));
 		props.put("copied", "false");
 		return props;
 	}
-	private static final int BUFFER_SIZE = 8192;
-	private static byte[] getDigest(InputStream in, String algorithm) throws Throwable {
-		MessageDigest md = MessageDigest.getInstance(algorithm);
-		try {
-			DigestInputStream dis = new DigestInputStream(in, md);
-			byte[] buffer = new byte[BUFFER_SIZE];
-			while (dis.read(buffer) != -1) {
-			}
-			dis.close();
-		} finally {
-			in.close();
-		}
-		return md.digest();
-	}
-
-	private static String getDigestString(InputStream in, String algorithm) throws Throwable {
-		byte[] digest = getDigest(in, algorithm);
+	private static String DigestToString(MessageDigest digest) {
+		byte[] digestbyte = digest.digest();
 		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < digest.length; i++) {
-			sb.append(String.format("%x", digest[i]));
+		for (int i = 0; i < digestbyte.length; i++) {
+			sb.append(String.format("%x", digestbyte[i]));
 		}
 		return sb.toString();
 	}
+	private static final int INITIAL_BUFFER_SIZE = 512;
 	public StorageObject NewObject(String main_table) {
 		return this.InsertNewObject(main_table);
 	}
