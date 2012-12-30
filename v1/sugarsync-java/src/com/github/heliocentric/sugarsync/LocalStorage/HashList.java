@@ -15,6 +15,9 @@ public class HashList {
 	public HashList(StorageObject object) {
 		this.object = object;
 	}
+	public String getUUID() {
+		return this.object.getAttributeString("uuid");
+	}
 	public String getSHA256() {
 		return this.object.getAttributeString("sha256");
 	}

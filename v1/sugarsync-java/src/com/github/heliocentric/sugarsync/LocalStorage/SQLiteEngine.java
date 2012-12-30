@@ -378,6 +378,12 @@ public class SQLiteEngine extends StorageEngine {
 	}
 
 	public StorageObject getNewRecord(String table) {
+
+		return this.InsertNewObject(table);
+	}
+
+	@Override
+	public StorageObject InsertNewObject(String table ) {
 		StorageObject object = new StorageObject();
 		try {
 			object.setEngine(this);
@@ -389,13 +395,6 @@ public class SQLiteEngine extends StorageEngine {
 		} catch (SQLiteException ex) {
 			Logger.getLogger(SQLiteEngine.class.getName()).log(Level.SEVERE, null, ex);
 		}
-		return object;
-	}
-
-	@Override
-	public StorageObject InsertNewObject(String main_table ) {
-		StorageObject object = new StorageObject();
-		
 		return object;
 	}
 }
