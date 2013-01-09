@@ -8,6 +8,8 @@ import com.github.heliocentric.sugarsync.LocalStorage.SQLiteEngine;
 import com.github.heliocentric.sugarsync.LocalStorage.StorageEngine;
 import com.github.heliocentric.sugarsync.LocalStorage.StorageEngineException;
 import java.lang.reflect.Field;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,6 +23,8 @@ public class Synchro {
 	public Synchro(PropertyList options) {
 		this.settings = options;
 	}
+	public UpdateManager UpdateM;
+	public ExecutorService ThreadPool;
 	public void start() throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 
 		System.setProperty("java.library.path",System.getProperty("java.library.path") + ":" + System.getProperty("user.dir"));
@@ -28,7 +32,17 @@ public class Synchro {
 		fieldSysPath.setAccessible( true );
 		fieldSysPath.set( null, null );
 		System.out.println(System.getProperty("java.library.path"));
+		
+		/* 
+		 * Create application wide thread pool
+		 * 
+		 */
+		this.ThreadPool = java.util.concurrent.Executors.newFixedThreadPool(10);
+		
 		this.DataEngine = new SQLiteEngine();
+		this.UpdateM = new UpdateManager(this.DataEngine, this.ThreadPool);
+		
+		this.UpdateM.Start();
 		try {
 			this.DataEngine.Open();
 		} catch (StorageEngineException ex) {
