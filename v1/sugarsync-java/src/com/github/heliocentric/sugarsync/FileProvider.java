@@ -4,7 +4,7 @@
  */
 package com.github.heliocentric.sugarsync;
 
-/**
+/*
  *
  * @author Helio
  */

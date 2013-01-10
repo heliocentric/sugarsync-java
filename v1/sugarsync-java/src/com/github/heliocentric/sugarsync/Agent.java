@@ -8,6 +8,9 @@ package com.github.heliocentric.sugarsync;
  *
  * @author helio
  */
-public interface Agent {
+public interface Agent extends Runnable {
 	public String getAgentID();
+	public void Start();
+	public void Stop();
+	public String Status();
 }

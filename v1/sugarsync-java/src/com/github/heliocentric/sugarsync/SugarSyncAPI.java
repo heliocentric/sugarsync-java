@@ -85,4 +85,24 @@ public class SugarSyncAPI extends FileProvider {
 	public String getAgentID() {
 		return this.AgentID;
 	}
+
+	@Override
+	public void run() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public void Start() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public void Stop() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public String Status() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 }

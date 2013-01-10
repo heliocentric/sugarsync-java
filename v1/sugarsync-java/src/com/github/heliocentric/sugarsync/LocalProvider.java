@@ -19,5 +19,25 @@ public class LocalProvider extends FileProvider {
 	public String getAgentID() {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
+
+	@Override
+	public void run() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public void Start() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public void Stop() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public String Status() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
 	
 }
