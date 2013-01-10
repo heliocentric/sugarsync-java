@@ -54,7 +54,14 @@ public class Synchro {
 		}
 		this.UpdateM = new UpdateManager(this.DataEngine, this.ThreadPool);
 		this.UpdateM.Start();
-		
+		/*
+		 * Set up Providers.
+		 * Right now we only have LocalProvider, which in all cases, is a
+		 * required provider. This Provider provides ALL information about local
+		 * file changes to the UpdateManager. UpdateManager updates the database,
+		 * creates shadow files in .synchro, and then changes the local
+		 * filesystem to match the resolved revision.
+		 */
 		FileProvider scratch = new LocalProvider(this.DataEngine, this.ThreadPool);
 		MessagePump updatemp = this.UpdateM.GetUpdatePump(scratch);
 		scratch.setMessagePump(updatemp);
