@@ -13,4 +13,5 @@ public interface Agent extends Runnable {
 	public void Start();
 	public void Stop();
 	public String Status();
+	public void setMessagePump(MessagePump Message);
 }

@@ -17,7 +17,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class UpdateManager implements Agent {
 	
-	UpdateManager(StorageEngine DataEngine, ExecutorService ThreadPool) {
+	public UpdateManager(StorageEngine DataEngine, ExecutorService ThreadPool) {
 		this.In = new LinkedBlockingQueue<Event>();
 		this.Out = new LinkedBlockingQueue<Event>();
 		this.DataEngine = DataEngine;
@@ -68,6 +68,11 @@ public class UpdateManager implements Agent {
 
 	@Override
 	public String Status() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public void setMessagePump(MessagePump Message) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 	

@@ -15,9 +15,10 @@ public class LocalProvider extends FileProvider {
 		this.AgentID = UUID.randomUUID().toString();
 	}
 	private String AgentID;
+	private MessagePump MessagePump;
 	@Override
 	public String getAgentID() {
-		throw new UnsupportedOperationException("Not supported yet.");
+		return this.AgentID;
 	}
 
 	@Override
@@ -37,6 +38,11 @@ public class LocalProvider extends FileProvider {
 
 	@Override
 	public String Status() {
+		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public void setMessagePump(MessagePump Message) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 	
