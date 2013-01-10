@@ -10,6 +10,7 @@ package com.github.heliocentric.sugarsync;
  */
 public interface Agent extends Runnable {
 	public String getAgentID();
+	public String getClassID();
 	public void Start();
 	public void Stop();
 	public String Status();

@@ -18,10 +18,13 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class UpdateManager implements Agent {
 	
 	public UpdateManager(StorageEngine DataEngine, ExecutorService ThreadPool) {
-		this.In = new LinkedBlockingQueue<Event>();
-		this.Out = new LinkedBlockingQueue<Event>();
+		LinkedBlockingQueue TempIn = new LinkedBlockingQueue<Event>();
+		LinkedBlockingQueue TempOut = new LinkedBlockingQueue<Event>();
+		this.In = TempIn;
+		this.Out = TempOut;
 		this.DataEngine = DataEngine;
 	}
+	private Thread thread;
 	@Override
 	public void Start(){
 		this.AgentID = UUID.randomUUID().toString();
@@ -38,7 +41,6 @@ public class UpdateManager implements Agent {
 	private BlockingQueue<Event> Out;
 	public StorageEngine DataEngine;
 	private String AgentID;
-	private Thread thread;
 			
 	@Override
 	public String getAgentID() {
@@ -52,7 +54,7 @@ public class UpdateManager implements Agent {
 			try {
 				Event evn = this.In.take();
 				if (evn.Type.equals("com.github.heliocentric.synchro.FileUpdate.v1")) {
-					
+					System.out.println(evn.Properties.get("directory") + File.separator + evn.Properties.get("name"));
 				}
 			}
 			catch (Exception e) {
@@ -74,6 +76,11 @@ public class UpdateManager implements Agent {
 	@Override
 	public void setMessagePump(MessagePump Message) {
 		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public String getClassID() {
+		return "826d9ced-ea7f-4928-9075-7d7cd4852cfb";
 	}
 	
 }

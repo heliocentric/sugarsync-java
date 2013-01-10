@@ -110,4 +110,9 @@ public class SugarSyncAPI extends FileProvider {
 	public void setMessagePump(MessagePump Message) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
+
+	@Override
+	public String getClassID() {
+		return "42930328-243c-4739-b4f2-c2c8d840a474";
+	}
 }
