@@ -8,6 +8,6 @@ package com.github.heliocentric.sugarsync;
  *
  * @author Helio
  */
-public interface SynchroAPI {
+public abstract class FileProvider implements Agent {
 	
 }

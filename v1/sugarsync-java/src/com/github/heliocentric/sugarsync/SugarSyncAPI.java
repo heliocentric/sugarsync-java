@@ -20,10 +20,10 @@ package com.github.heliocentric.sugarsync;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,7 +31,10 @@ import java.util.logging.Logger;
  *
  * @author helio
  */
-public class SugarSyncAPI implements SynchroAPI {
+public class SugarSyncAPI extends FileProvider {
+	public SugarSyncAPI() {
+		this.AgentID = UUID.randomUUID().toString();
+	}
     private String UserAgent = "SugarSync-Java/1.0";
 	private String AUTH_ACCESS_TOKEN_API_URL = "https://api.sugarsync.com/authorization";
 	private String ACCESS_TOKEN_AUTH_REQUEST_TEMPLATE = 
@@ -76,4 +79,10 @@ public class SugarSyncAPI implements SynchroAPI {
 	private String PrivateKey;
 	private String Username;
 	private String Password;
+
+	private String AgentID;
+	@Override
+	public String getAgentID() {
+		return this.AgentID;
+	}
 }

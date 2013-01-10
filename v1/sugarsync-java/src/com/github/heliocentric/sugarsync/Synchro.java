@@ -37,12 +37,17 @@ public class Synchro {
 		 * Create application wide thread pool
 		 * 
 		 */
-		this.ThreadPool = java.util.concurrent.Executors.newFixedThreadPool(10);
+		this.ThreadPool = java.util.concurrent.Executors.newFixedThreadPool(20);
 		
 		this.DataEngine = new SQLiteEngine();
+		try {
+			this.DataEngine.Open();
+		} catch (StorageEngineException ex) {
+			Logger.getLogger(Synchro.class.getName()).log(Level.SEVERE, null, ex);
+		}
 		this.UpdateM = new UpdateManager(this.DataEngine, this.ThreadPool);
-		
 		this.UpdateM.Start();
+		
 		try {
 			this.DataEngine.Open();
 		} catch (StorageEngineException ex) {
