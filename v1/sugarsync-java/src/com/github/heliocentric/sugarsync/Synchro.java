@@ -41,7 +41,7 @@ public class Synchro {
 		 * 
 		 */
 		
-		this.ThreadPool = java.util.concurrent.Executors.newFixedThreadPool(20);
+		this.ThreadPool = java.util.concurrent.Executors.newFixedThreadPool(40);
 		
 		
 		this.Providers = new HashMap<String,FileProvider>(20);
@@ -52,6 +52,7 @@ public class Synchro {
 		} catch (StorageEngineException ex) {
 			Logger.getLogger(Synchro.class.getName()).log(Level.SEVERE, null, ex);
 		}
+		
 		this.UpdateM = new UpdateManager(this.DataEngine, this.ThreadPool);
 		this.UpdateM.Start();
 		/*
@@ -62,9 +63,10 @@ public class Synchro {
 		 * creates shadow files in .synchro, and then changes the local
 		 * filesystem to match the resolved revision.
 		 */
-		FileProvider scratch = new LocalProvider(this.DataEngine, this.ThreadPool);
+		LocalProvider scratch = new LocalProvider(this.DataEngine, this.ThreadPool);
 		MessagePump updatemp = this.UpdateM.GetUpdatePump(scratch);
 		scratch.setMessagePump(updatemp);
+		scratch.DomainPath = this.settings.get("path");
 		
 		this.Providers.put(scratch.getClassID(), scratch);
 		
